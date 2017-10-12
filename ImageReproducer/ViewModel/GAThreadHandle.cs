@@ -33,7 +33,7 @@ namespace ImageReproducer.ViewModel
             while (++n <= GAParams.General.NumberOfGeneration && !Token.IsCancellationRequested)
             {
                 Manager.NextGeneration();
-                ImageQueue.Enqueue(new ThreadMessage(Evaluator.IndToMat(Manager.GetBestInd()), Manager.GenerationNumber));
+                ImageQueue.Enqueue(new ThreadMessage(Evaluator.IndToMat(Manager.GetBestInd()), Manager.GenerationNumber, Manager.GetBestInd().Fitness));
             }
             Manager.SaveBestInd();
 

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Collections.Concurrent;
 using System.Windows;
 using System.Threading;
+using System.Diagnostics;
 using Emgu.CV;
 using Emgu.CV.UI;
 using Emgu.CV.Structure;
@@ -113,7 +114,47 @@ namespace ImageReproducer.ViewModel
             }
         }
 
+        private double _TotalElapseTime = 0;
+        public double TotalElapseTime
+        {
+            get
+            {
+                return _TotalElapseTime;
+            }
+            set
+            {
+                _TotalElapseTime = value;
+                RaisePropertyChanged(nameof(TotalElapseTime));
+            }
+        }
 
+        private double _GenerationMeanTime = 0;
+        public double GenerationMeanTime
+        {
+            get
+            {
+                return _GenerationMeanTime;
+            }
+            set
+            {
+                _GenerationMeanTime = value;
+                RaisePropertyChanged(nameof(GenerationMeanTime));
+            }
+        }
+
+        private int _BestFitness = 0;
+        public int BestFitness
+        {
+            get
+            {
+                return _BestFitness;
+            }
+            set
+            {
+                _BestFitness = value;
+                RaisePropertyChanged(nameof(BestFitness));
+            }
+        }
 
         public MainWindowViewModel()
         {
@@ -211,25 +252,32 @@ namespace ImageReproducer.ViewModel
         {
             ThreadMessage CurrentMsg;
 
-            while (true)
+            Stopwatch timer = new Stopwatch();
+
+            while (!cancelToken.IsCancellationRequested)
             {
-                if (cancelToken.IsCancellationRequested)
-                    return;
-                // Récupération du message
                 if (ImageQueue.TryDequeue(out CurrentMsg))
                 {
+                    if (!timer.IsRunning)
+                        timer.Start();
+
                     if (CurrentMsg.Image != null && BestImg != null)
                     {
                         BestImg.Image = CurrentMsg.Image.ToImage<Bgr, Byte>();
                     }
+
                     CurrentGeneration = CurrentMsg.GenerationNumber;
+                    BestFitness = CurrentMsg.BestFitness;
+                    TotalElapseTime = timer.Elapsed.TotalSeconds;
+                    if (CurrentGeneration > 1)
+                        GenerationMeanTime = (double)timer.ElapsedMilliseconds / (CurrentGeneration-1);
+
                 }
 
                 if (!GAThread.IsAlive)
-                {
                     StartStop();
-                }
             }
+            timer.Stop();
         }
 
         private void RaisePropertyChanged(string propName)
