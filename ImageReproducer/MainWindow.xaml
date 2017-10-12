@@ -6,53 +6,91 @@
         xmlns:emui="clr-namespace:Emgu.CV.UI;assembly=Emgu.CV.UI"
         xmlns:local="clr-namespace:ImageReproducer.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="1200">
+        Title="MainWindow" Height="700" Width="1200">
     <Window.DataContext>
         <local:MainWindowViewModel/>
     </Window.DataContext>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
-
-        <Image x:Name="TargetImg" Source="{Binding TargetImgPath}" Width="{Binding ImageWidth}" Height="{Binding ImageHeight}" Grid.Column="0" Margin="10"/>
-
-        <Grid Grid.Column="1">
+        
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
 
-            <WindowsFormsHost Grid.Column="1" Margin="0,50,0,0" Width="{Binding ImageWidth}" Height="{Binding ImageHeight}" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <emui:ImageBox x:Name="BestImg"/>
-            </WindowsFormsHost>
+            <Image x:Name="TargetImg" Source="{Binding TargetImgPath}" Width="{Binding ImageWidth}" Height="{Binding ImageHeight}" Grid.Column="0" Margin="10"/>
 
-            <Label x:Name="Generation" Grid.Row="1" Content="{Binding CurrentGeneration}" ContentStringFormat="{}Génération n°{0:#}" HorizontalAlignment="Center" VerticalAlignment="Top" />
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <WindowsFormsHost Grid.Column="1" Margin="0,50,0,0" Width="{Binding ImageWidth}" Height="{Binding ImageHeight}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <emui:ImageBox x:Name="BestImg"/>
+                </WindowsFormsHost>
+
+                <Label x:Name="Generation" Grid.Row="1" Content="{Binding CurrentGeneration}" ContentStringFormat="{}Génération n°{0:#}" HorizontalAlignment="Center" VerticalAlignment="Top" />
+            </Grid>
+
+            <Grid Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="BtnOptions" Grid.Row="0" Content="Options"                       Margin="5" Height="30" Width="150" Command="{Binding OptionsCommand}"/>
+                <Button x:Name="BtnLoad"    Grid.Row="1" Content="Load"                          Margin="5" Height="30" Width="150" Command="{Binding LoadCommand}"/>
+                <Button x:Name="BtnStart"   Grid.Row="2" Content="{Binding ButtonStartStopName}" Margin="5" Height="30" Width="150" Command="{Binding StartStopCommand}"/>
+
+            </Grid>
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+
+            <Label x:Name="LabelConstElapseTime" Grid.Column="0" Margin ="5,5,0,5" Content="Elapse Time (s) : "/>
+            <Label x:Name="LabelElapseTime"      Grid.Column="1" Margin ="0,5,5,5" Content="{Binding TotalElapseTime}" ContentStringFormat="{}{0:0.00}" HorizontalAlignment="Left"/>
+            
+            <Label x:Name="LabelConstMeanGenerationTime" Grid.Column="2" Margin ="5,5,0,5" Content="Mean generation time (ms) : "/>
+            <Label x:Name="LabelMeanGenerationTime"      Grid.Column="3" Margin ="0,5,5,5" Content="{Binding GenerationMeanTime}" ContentStringFormat="{}{0:0.00}" HorizontalAlignment="Left"/>
+
+            <Label x:Name="LabelConstBestFitness" Grid.Column="4" Margin ="5,5,0,5" Content="Best Fitness : "/>
+            <Label x:Name="LabelBestFitness"      Grid.Column="5" Margin ="0,5,5,5" Content="{Binding BestFitness}" HorizontalAlignment="Left"/>
+
         </Grid>
         
-        <Grid Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Button x:Name="BtnOptions" Grid.Row="0" Content="Options"                       Margin="5" Height="30" Width="150" Command="{Binding OptionsCommand}"/>
-            <Button x:Name="BtnLoad"    Grid.Row="1" Content="Load"                          Margin="5" Height="30" Width="150" Command="{Binding LoadCommand}"/>
-            <Button x:Name="BtnStart"   Grid.Row="2" Content="{Binding ButtonStartStopName}" Margin="5" Height="30" Width="150" Command="{Binding StartStopCommand}"/>
-
-        </Grid>
-
     </Grid>
+    
+    
 </Window>
