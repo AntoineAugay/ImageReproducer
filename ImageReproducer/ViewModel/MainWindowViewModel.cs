@@ -170,7 +170,6 @@ namespace ImageReproducer.ViewModel
             Params.General.PopulationSize = 100;
             Params.General.AdnSize = 50;
             Params.General.GeneSize = 2;
-            Params.General.InfiniteGeneration = false;
             Params.General.NumberOfGeneration = 1000;
 
             Params.Selection.SelectionMethod = GASelectionMethod.TournamentSelection;

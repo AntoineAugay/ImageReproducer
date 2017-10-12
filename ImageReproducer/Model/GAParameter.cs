@@ -13,7 +13,6 @@ namespace GeneticAlgorithm
         public int PopulationSize;
         public int AdnSize;
         public int GeneSize;
-        public bool InfiniteGeneration;
         public int NumberOfGeneration;
     }
 

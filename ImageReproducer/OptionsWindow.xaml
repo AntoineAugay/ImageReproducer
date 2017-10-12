@@ -26,7 +26,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -50,12 +50,9 @@
                     <Slider x:Name="SliderGeneSize"     Grid.Row="2" Grid.Column="2" Value="{Binding GeneSize}" Margin="5, 10, 5, 10" VerticalAlignment="Center" SmallChange="1" Minimum="1"  Maximum="100"/>
 
                     <!-- Row 3 -->
-                    <CheckBox x:Name="checkBoxInfiniteGenerations" Grid.Row="3" IsChecked="{Binding InfiniteGeneration}" Content="Keep best individu" Margin="10, 10, 0, 10"/>
-
-                    <!-- Row 4 -->
-                    <Label  x:Name="LabelConstNumberOfGeneration" Grid.Row="4" Grid.Column="0" Content="# of generations :" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <Label  x:Name="LabelNumberOfGeneration"      Grid.Row="4" Grid.Column="1" Content="{Binding ElementName=SliderNumberOfGenerations, Path=Value}" ContentStringFormat="{}{0:#}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    <Slider x:Name="SliderNumberOfGenerations"    Grid.Row="4" Grid.Column="2" Value="{Binding NumberOfGenerations}" Margin="5, 10, 5, 10" VerticalAlignment="Center" SmallChange="1" Minimum="1"  Maximum="10000"/>
+                    <Label  x:Name="LabelConstNumberOfGeneration" Grid.Row="3" Grid.Column="0" Content="# of generations :" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Label  x:Name="LabelNumberOfGeneration"      Grid.Row="3" Grid.Column="1" Content="{Binding ElementName=SliderNumberOfGenerations, Path=Value}" ContentStringFormat="{}{0:#}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <Slider x:Name="SliderNumberOfGenerations"    Grid.Row="3" Grid.Column="2" Value="{Binding NumberOfGenerations}" Margin="5, 10, 5, 10" VerticalAlignment="Center" SmallChange="1" Minimum="1"  Maximum="10000"/>
 
                 </Grid>
             </TabItem>

@@ -79,21 +79,6 @@ namespace ImageReproducer.ViewModel
             }
         }
 
-        private bool _InfiniteGeneration = false;
-        public bool InfiniteGeneration
-        {
-            get
-            {
-                return _InfiniteGeneration;
-            }
-            set
-            {
-                ApplyBtnEnable = true;
-                _InfiniteGeneration = value;
-                RaisePropertyChanged(nameof(InfiniteGeneration));
-            }
-        }
-
         private int _NumberOfGenerations = 1;
         public int NumberOfGenerations
         {
@@ -289,7 +274,6 @@ namespace ImageReproducer.ViewModel
             PopulationSize = Params.General.PopulationSize;
             AdnSize = Params.General.AdnSize;
             GeneSize = Params.General.GeneSize;
-            InfiniteGeneration = Params.General.InfiniteGeneration;
             NumberOfGenerations = Params.General.NumberOfGeneration;
 
             SelectedPartPop = (int)(Params.Selection.PartOfPopulationSelected * 100);
@@ -310,7 +294,6 @@ namespace ImageReproducer.ViewModel
             Params.General.PopulationSize = _PopulationSize;
             Params.General.AdnSize = _AdnSize;
             Params.General.GeneSize = _GeneSize;
-            Params.General.InfiniteGeneration = _InfiniteGeneration;
             Params.General.NumberOfGeneration = _NumberOfGenerations;
 
             Params.Selection.SelectionMethod = GASelectionMethod.TournamentSelection;
