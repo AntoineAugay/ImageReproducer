@@ -1,0 +1,185 @@
+﻿<Window x:Class="ImageReproducer.OptionsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImageReproducer.ViewModel"
+        mc:Ignorable="d"        
+        Title="Options" Height="356" Width="380">
+    <Window.DataContext>
+        <local:OptionsWindowViewModel/>
+    </Window.DataContext>
+
+    <Grid VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TabControl x:Name="tabControl" Grid.Row="0">
+
+            <TabItem Header="General">
+
+                <Grid Height="300">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Row 0 -->
+                    <Label  x:Name="LabelConstPopSize" Grid.Row="0" Grid.Column="0" Content="Population size :" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Label  x:Name="LabelPopSize"      Grid.Row="0" Grid.Column="1" Content="{Binding ElementName=SliderPopSize, Path=Value}" ContentStringFormat="{}{0:#}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <Slider x:Name="SliderPopSize"     Grid.Row="0" Grid.Column="2" Value="{Binding PopulationSize}" Margin="5, 10, 5, 10" VerticalAlignment="Center" SmallChange="1" Minimum="10" Maximum="200"/>
+
+                    <!-- Row 1 -->
+                    <Label  x:Name="LabelConstAdnSize" Grid.Row="1" Grid.Column="0" Content="Adn size :" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Label  x:Name="LabelAdnSize"      Grid.Row="1" Grid.Column="1" Content="{Binding ElementName=SliderAdnSize, Path=Value}" ContentStringFormat="{}{0:#}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <Slider x:Name="SliderAdnSize"     Grid.Row="1" Grid.Column="2" Value="{Binding AdnSize}" Margin="5, 10, 5, 10" VerticalAlignment="Center" SmallChange="1" Minimum="10" Maximum="5000"/>
+
+                    <!-- Row 2 -->
+                    <Label  x:Name="LabelConstGeneSize" Grid.Row="2" Grid.Column="0" Content="Gene size :" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Label  x:Name="LabelGeneSize"      Grid.Row="2" Grid.Column="1" Content="{Binding ElementName=SliderGeneSize, Path=Value}" ContentStringFormat="{}{0:#}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <Slider x:Name="SliderGeneSize"     Grid.Row="2" Grid.Column="2" Value="{Binding GeneSize}" Margin="5, 10, 5, 10" VerticalAlignment="Center" SmallChange="1" Minimum="1"  Maximum="100"/>
+
+                    <!-- Row 3 -->
+                    <CheckBox x:Name="checkBoxInfiniteGenerations" Grid.Row="3" IsChecked="{Binding InfiniteGeneration}" Content="Keep best individu" Margin="10, 10, 0, 10"/>
+
+                    <!-- Row 4 -->
+                    <Label  x:Name="LabelConstNumberOfGeneration" Grid.Row="4" Grid.Column="0" Content="# of generations :" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Label  x:Name="LabelNumberOfGeneration"      Grid.Row="4" Grid.Column="1" Content="{Binding ElementName=SliderNumberOfGenerations, Path=Value}" ContentStringFormat="{}{0:#}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <Slider x:Name="SliderNumberOfGenerations"    Grid.Row="4" Grid.Column="2" Value="{Binding NumberOfGenerations}" Margin="5, 10, 5, 10" VerticalAlignment="Center" SmallChange="1" Minimum="1"  Maximum="10000"/>
+
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Selection" Height="22" VerticalAlignment="Bottom">
+                <Grid Height="300">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Row 0 -->
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock x:Name="TextBlockSelectedPart" Grid.Column="0" Margin="10,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center">Selected part of
+                                <LineBreak/>the population
+                        </TextBlock>
+                        <Label  x:Name="LabelSelectedPart"  Grid.Column="1" Content="{Binding ElementName=SliderSelectedPart, Path=Value}" Margin="5" ContentStringFormat="{}{0:#}%" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Slider x:Name="SliderSelectedPart" Grid.Column="2" Value="{Binding SelectedPartPop}" Margin="10" VerticalAlignment="Center" SmallChange="1" Minimum="20" Maximum="60" />
+
+                    </Grid>
+
+                    <!-- Row 1 -->
+                    <CheckBox x:Name="checkBox" IsChecked="{Binding KeepBestInd}" Grid.Row="1" Content="Keep best individu" Margin="10, 10, 0, 10"/>
+
+                    <!-- Row 2 -->
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label x:Name="LabelConstSelectMethod" Content="Selection Method : " Margin="10,0,0,0"/>
+                        <ComboBox x:Name="comboBox" ItemsSource="{Binding ItemsSelectionComboBox}" SelectedItem="{Binding SelectedItemSelectionComboBox}" Grid.Column="1" Margin="2,2,2,2" />
+
+                    </Grid>
+
+
+                    <Grid Grid.Row="3" Visibility="{Binding TournamentOptionsEnable}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Row 0 -->
+                        <Label  x:Name="LabelConstTournamentSize" Grid.Row="0" Grid.Column="0" Content="Tournament size :" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Label  x:Name="LabelTournamentSize"      Grid.Row="0" Grid.Column="1" Content="{Binding ElementName=SliderTournamentSize, Path=Value}" ContentStringFormat="{}{0:#}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Slider x:Name="SliderTournamentSize"     Grid.Row="0" Grid.Column="2" Value="{Binding TournamentSize}" Margin="5, 10, 5, 10" VerticalAlignment="Center" SmallChange="1" Minimum="2"  Maximum="6"/>
+
+                        <!-- Row 1 -->
+                        <Label  x:Name="LabelConstNumberOfWinner" Grid.Row="1" Grid.Column="0" Content="Number of winner :" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Label  x:Name="LabelNumberOfWinner"      Grid.Row="1" Grid.Column="1" Content="{Binding ElementName=SliderNumberOfWinner, Path=Value}" ContentStringFormat="{}{0:#}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Slider x:Name="SliderNumberOfWinner"     Grid.Row="1" Grid.Column="2" Value="{Binding NumberOfWinners}" Margin="5, 10, 5, 10" VerticalAlignment="Center" SmallChange="1" Minimum="1"  Maximum="5"/>
+
+                    </Grid>
+                    
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Reproduction">
+                <Grid Height="300">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock x:Name="TextBlockProbReprodution" Grid.Column="0" Margin="10,0,10,0" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center">Probability of
+                    <LineBreak/>reproduction
+                    </TextBlock>
+                    <Label x:Name="LabelProbReproduction"  Grid.Column="1" Content="{Binding ElementName=SliderReprodutionProb, Path=Value}" Margin="5" ContentStringFormat="{}{0:#}%" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Slider x:Name="SliderReprodutionProb" Grid.Column="2" Value="{Binding ReproductionProb}" Margin="10" VerticalAlignment="Center" SmallChange="1" Minimum="0"  Maximum="100"/>
+
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Mutation">
+                <Grid Height="300">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock x:Name="TextBlockProbMutation" Grid.Column="0" Margin="10,5,10,5" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center">Probability of
+                        <LineBreak/>mutation
+                    </TextBlock>
+                    <Label  x:Name="LabelProbMutation"  Grid.Column="1" Content="{Binding ElementName=SliderMutationProb, Path=Value}" Margin="5" ContentStringFormat="{}{0:0.0}%" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Slider x:Name="SliderMutationProb" Grid.Column="2" Value="{Binding MutationProb}" Margin="10" VerticalAlignment="Center" SmallChange="1" Minimum="0" Maximum="5"/>
+ 
+                </Grid>
+            </TabItem>
+
+
+        </TabControl>
+
+        <Button Grid.Row="1" Command="{Binding ApplyCommand}" IsEnabled="{Binding ApplyBtnEnable}" Content="Apply" Height="30" Margin="10,5,10,5"/>
+
+    </Grid>
+</Window>
