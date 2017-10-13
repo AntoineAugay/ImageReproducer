@@ -89,7 +89,7 @@
                     </Grid>
 
                     <!-- Row 1 -->
-                    <CheckBox x:Name="checkBox" IsChecked="{Binding KeepBestInd}" Grid.Row="1" Content="Keep best individu" Margin="10, 10, 0, 10"/>
+                    <CheckBox x:Name="CheckBoxKeepBest" IsChecked="{Binding KeepBestInd}" Grid.Row="1" Content="Keep best individu" Margin="10, 10, 0, 10"/>
 
                     <!-- Row 2 -->
                     <Grid Grid.Row="2">
@@ -101,8 +101,8 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Label x:Name="LabelConstSelectMethod" Content="Selection Method : " Margin="10,0,0,0"/>
-                        <ComboBox x:Name="comboBox" ItemsSource="{Binding ItemsSelectionComboBox}" SelectedItem="{Binding SelectedItemSelectionComboBox}" Grid.Column="1" Margin="2,2,2,2" />
+                        <Label    x:Name="LabelConstSelectMethod" Grid.Column="0" Margin="10, 0, 0, 0" Content="Selection Method : "/>
+                        <ComboBox x:Name="ComboBoxSelection"      Grid.Column="1" Margin="2"           ItemsSource="{Binding ItemsSelectionComboBox}" SelectedItem="{Binding SelectedItemSelectionComboBox}"  />
 
                     </Grid>
 
@@ -172,7 +172,6 @@
  
                 </Grid>
             </TabItem>
-
 
         </TabControl>
 

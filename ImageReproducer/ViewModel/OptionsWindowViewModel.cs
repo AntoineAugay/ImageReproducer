@@ -296,7 +296,20 @@ namespace ImageReproducer.ViewModel
             Params.General.GeneSize = _GeneSize;
             Params.General.NumberOfGeneration = _NumberOfGenerations;
 
-            Params.Selection.SelectionMethod = GASelectionMethod.TournamentSelection;
+
+            switch (_SelectedItemSelectionComboBox)
+            {
+                case "TournamentSelection":
+                    Params.Selection.SelectionMethod = GASelectionMethod.TournamentSelection;
+                    break;
+                case "WheelSelection":
+                    Params.Selection.SelectionMethod = GASelectionMethod.WheelSelection;
+                    break;
+                default:
+                    Params.Selection.SelectionMethod = GASelectionMethod.TournamentSelection;
+                    break;
+            }
+
             Params.Selection.PartOfPopulationSelected = (double)_SelectedPartPop / 100;
             Params.Selection.KeepBest = _KeepBestInd;
             Params.Selection.TournamentSize = TournamentSize;
