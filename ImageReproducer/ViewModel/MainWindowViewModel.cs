@@ -24,6 +24,7 @@ namespace ImageReproducer.ViewModel
         private ConcurrentQueue<ThreadMessage> ImageQueue = new ConcurrentQueue<ThreadMessage>();
         private Thread ThreadMessageProcess;
         private GAParameters Params;
+        private GAEvaluatorParameters EvaluatorParams;
         private GAThreadHandle GAImageReproducerThreadHandler;
         private Thread GAThread;
         private CancellationTokenSource CancelTokenSource;
@@ -162,6 +163,7 @@ namespace ImageReproducer.ViewModel
             LoadCommand = new RelayCommand(Load);
             StartStopCommand = new RelayCommand(StartStop);
             Params = new GAParameters();
+            EvaluatorParams = new GAEvaluatorParameters();
             SetDefaultParams();
         }
 
@@ -181,6 +183,15 @@ namespace ImageReproducer.ViewModel
             Params.Reproduction.ReproductionProbability = 0.9;
 
             Params.Mutation.MutationProbability = 0.03;
+
+            EvaluatorParams.Interpretation.Color = GAColorType.BlackAndWhite;
+            EvaluatorParams.Interpretation.Form = GAGeneForm.Rectangle;
+            EvaluatorParams.Interpretation.IsSizeVariable = false;
+            EvaluatorParams.Interpretation.MaxSize = 10;
+            EvaluatorParams.Interpretation.MinSize = 3;
+            EvaluatorParams.Interpretation.Width   = 5;
+            EvaluatorParams.Interpretation.Height  = 5;
+
         }
 
         public void SetBestImg(ImageBox Img)
@@ -190,7 +201,7 @@ namespace ImageReproducer.ViewModel
 
         private void Options()
         {
-            OptionsWindow Options = new OptionsWindow(ref Params);
+            OptionsWindow Options = new OptionsWindow(ref Params, ref EvaluatorParams);
             Options.ShowDialog();
         }
 

@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Text.RegularExpressions;
 using System.Collections.ObjectModel;
 using GeneticAlgorithm;
 
@@ -13,11 +14,11 @@ namespace ImageReproducer.ViewModel
     {
         public RelayCommand ApplyCommand { get; private set; }
         public event PropertyChangedEventHandler PropertyChanged;
+        private Regex RegThreeDigits;
 
         private GAParameters Params;
+        private GAEvaluatorParameters EvaluatorParams;
 
-        public ObservableCollection<string> ItemsSelectionComboBox { get; set; }
-        
         private bool _ApplyBtnEnable = false;
         public bool ApplyBtnEnable
         {
@@ -124,6 +125,8 @@ namespace ImageReproducer.ViewModel
                 RaisePropertyChanged(nameof(KeepBestInd));
             }
         }
+
+        public ObservableCollection<string> ItemsSelectionComboBox { get; set; }
 
         private string _SelectedItemSelectionComboBox;
         public string SelectedItemSelectionComboBox
@@ -257,6 +260,213 @@ namespace ImageReproducer.ViewModel
             }
         }
 
+        // Interpretation Gene Tab
+
+        public ObservableCollection<string> ItemsColorComboBox { get; set; }
+
+        private string _SelectedItemColorComboBox;
+        public string SelectedItemColorComboBox
+        {
+            get
+            {
+                return _SelectedItemColorComboBox;
+            }
+            set
+            {
+                ApplyBtnEnable = true;
+                _SelectedItemColorComboBox = value;
+                int TmpGeneSize = 2;
+                if (_SelectedItemColorComboBox == "GrayScale")
+                    TmpGeneSize++;
+                if (IsSizeVariable)
+                    TmpGeneSize +=2;
+                GeneSize = TmpGeneSize;
+                InfoGene = InfoBuilder(SelectedItemColorComboBox, IsSizeVariable);
+                RaisePropertyChanged(nameof(SelectedItemColorComboBox));
+            }
+        }
+
+        public ObservableCollection<string> ItemsFormComboBox { get; set; }
+
+        private string _SelectedItemFormComboBox;
+        public string SelectedItemFormComboBox
+        {
+            get
+            {
+                return _SelectedItemFormComboBox;
+            }
+            set
+            {
+                ApplyBtnEnable = true;
+                _SelectedItemFormComboBox = value;
+                RaisePropertyChanged(nameof(SelectedItemFormComboBox));
+            }
+        }
+
+        private bool _IsSizeVariable;
+        public bool IsSizeVariable
+        {
+            get
+            {
+                return _IsSizeVariable;
+            }
+            set
+            {
+                ApplyBtnEnable = true;
+                _IsSizeVariable = value;
+                int TmpGeneSize = 2;
+                if (_IsSizeVariable)
+                {
+                    GridFixedSizeVisibility    = Visibility.Hidden;
+                    GridVariableSizeVisibility = Visibility.Visible;
+                    TmpGeneSize += 2;
+                }
+                else
+                {
+                    GridFixedSizeVisibility = Visibility.Visible;
+                    GridVariableSizeVisibility = Visibility.Hidden;
+                }
+                if (SelectedItemColorComboBox == "GrayScale")
+                    TmpGeneSize++;
+                GeneSize = TmpGeneSize;
+                InfoGene = InfoBuilder(SelectedItemColorComboBox, IsSizeVariable);
+                RaisePropertyChanged(nameof(IsSizeVariable));
+            }
+        }
+
+        private Visibility _GridVariableSizeVisibility;
+        public Visibility GridVariableSizeVisibility
+        {
+            get
+            {
+                return _GridVariableSizeVisibility;
+            }
+            set
+            {
+                ApplyBtnEnable = true;
+                _GridVariableSizeVisibility = value;
+                RaisePropertyChanged(nameof(GridVariableSizeVisibility));
+            }
+        }
+
+        private Visibility _GridFixedSizeVisibility;
+        public Visibility GridFixedSizeVisibility
+        {
+            get
+            {
+                return _GridFixedSizeVisibility;
+            }
+            set
+            {
+                ApplyBtnEnable = true;
+                _GridFixedSizeVisibility = value;
+                RaisePropertyChanged(nameof(GridFixedSizeVisibility));
+            }
+        }
+
+        private string _SizeMinGene = "1";
+        public string SizeMinGene
+        {
+            get
+            {
+                return _SizeMinGene;
+            }
+            set
+            {
+                Match Result = RegThreeDigits.Match(value);
+                if (Result.Success && (int.Parse(_SizeMaxGene) >= int.Parse(value)))
+                {
+                    ApplyBtnEnable = true;
+                    _SizeMaxGene = value;
+                    RaisePropertyChanged(nameof(SizeMaxGene));
+                }
+            }
+        }
+
+        private string _SizeMaxGene = "1";
+        public string SizeMaxGene
+        {
+            get
+            {
+                return _SizeMaxGene;
+            }
+            set
+            {
+                Match Result = RegThreeDigits.Match(value);
+                if (Result.Success && (int.Parse(_SizeMinGene) <= int.Parse(value)))
+                {
+                    ApplyBtnEnable = true;
+                    _SizeMaxGene = value;
+                    RaisePropertyChanged(nameof(SizeMaxGene));
+                }
+            }
+        }
+
+        private string _HeightGene = "1";
+        public string HeightGene
+        {
+            get
+            {
+                return _HeightGene;
+            }
+            set
+            {
+                Match Result = RegThreeDigits.Match(value);
+                if (Result.Success)
+                {
+                    ApplyBtnEnable = true;
+                    _HeightGene = value;
+                    RaisePropertyChanged(nameof(HeightGene));
+                }
+            }
+        }
+
+        private string _WidthGene = "1";
+        public string WidthGene
+        {
+            get
+            {
+                return _WidthGene;
+            }
+            set
+            {
+                Match Result = RegThreeDigits.Match(value);
+                if (Result.Success)
+                {
+                    ApplyBtnEnable = true;
+                    _WidthGene = value;
+                    RaisePropertyChanged(nameof(WidthGene));
+                }
+            }
+        }
+
+        private string _InfoGene;
+        public string InfoGene
+        {
+            get
+            {
+                return _InfoGene;
+            }
+            set
+            {
+                ApplyBtnEnable = true;
+                _InfoGene = value;
+                RaisePropertyChanged(nameof(InfoGene));
+            }
+        }
+
+        private string InfoBuilder(string Color, bool IsSizeVariable)
+        {
+            string Info = "";
+            Info += "(x, y";
+            if (IsSizeVariable)
+                Info += ", sizeMin, sizeMax";
+            if (Color == "GrayScale")
+                Info += ", Color";
+            Info += ")";
+            return Info;
+        }
+
 
         public OptionsWindowViewModel()
         {
@@ -265,11 +475,24 @@ namespace ImageReproducer.ViewModel
             Enum.GetNames(typeof(GASelectionMethod)).ToList().ForEach( str => {
                 ItemsSelectionComboBox.Add(str);
             });
+
+            ItemsColorComboBox = new ObservableCollection<string>();
+            Enum.GetNames(typeof(GAColorType)).ToList().ForEach(str => {
+                ItemsColorComboBox.Add(str);
+            });
+
+            ItemsFormComboBox = new ObservableCollection<string>();
+            Enum.GetNames(typeof(GAGeneForm)).ToList().ForEach(str => {
+                ItemsFormComboBox.Add(str);
+            });
+
+            RegThreeDigits = new Regex(@"\d{1,3}");
         }
 
-        public void SetParams(ref GAParameters Params)
+        public void SetParams(ref GAParameters Params, ref GAEvaluatorParameters EvaluatorParams)
         {
             this.Params = Params;
+            this.EvaluatorParams = EvaluatorParams;
 
             PopulationSize = Params.General.PopulationSize;
             AdnSize = Params.General.AdnSize;
@@ -286,6 +509,14 @@ namespace ImageReproducer.ViewModel
 
             MutationProb = Params.Mutation.MutationProbability*100;
 
+            SelectedItemColorComboBox = Enum.GetName(typeof(GAColorType), EvaluatorParams.Interpretation.Color);
+            SelectedItemFormComboBox  = Enum.GetName(typeof(GAGeneForm) , EvaluatorParams.Interpretation.Form);
+            IsSizeVariable = EvaluatorParams.Interpretation.IsSizeVariable;
+            SizeMaxGene = EvaluatorParams.Interpretation.MaxSize.ToString();
+            SizeMinGene = EvaluatorParams.Interpretation.MinSize.ToString();
+            HeightGene  = EvaluatorParams.Interpretation.Height.ToString();
+            WidthGene   = EvaluatorParams.Interpretation.Width.ToString();
+
             ApplyBtnEnable = false;
         }
 
@@ -295,7 +526,6 @@ namespace ImageReproducer.ViewModel
             Params.General.AdnSize = _AdnSize;
             Params.General.GeneSize = _GeneSize;
             Params.General.NumberOfGeneration = _NumberOfGenerations;
-
 
             switch (_SelectedItemSelectionComboBox)
             {
@@ -309,7 +539,6 @@ namespace ImageReproducer.ViewModel
                     Params.Selection.SelectionMethod = GASelectionMethod.TournamentSelection;
                     break;
             }
-
             Params.Selection.PartOfPopulationSelected = (double)_SelectedPartPop / 100;
             Params.Selection.KeepBest = _KeepBestInd;
             Params.Selection.TournamentSize = TournamentSize;
@@ -318,6 +547,36 @@ namespace ImageReproducer.ViewModel
             Params.Reproduction.ReproductionProbability = (double) _ReproductionProb / 100;
 
             Params.Mutation.MutationProbability = _MutationProb / 100;
+
+            switch (SelectedItemColorComboBox)
+            {
+                case "BlackAndWhite":
+                    EvaluatorParams.Interpretation.Color = GAColorType.BlackAndWhite;
+                    break;
+                case "GrayScale":
+                    EvaluatorParams.Interpretation.Color = GAColorType.GrayScale;
+                    break;
+                default:
+                    EvaluatorParams.Interpretation.Color = GAColorType.BlackAndWhite;
+                    break;
+            }
+            switch (SelectedItemFormComboBox)
+            {
+                case "Rectangle":
+                    EvaluatorParams.Interpretation.Form = GAGeneForm.Rectangle;
+                    break;
+                case "Ellipse":
+                    EvaluatorParams.Interpretation.Form = GAGeneForm.Ellipse;
+                    break;
+                default:
+                    EvaluatorParams.Interpretation.Form = GAGeneForm.Rectangle;
+                    break;
+            }
+            EvaluatorParams.Interpretation.IsSizeVariable = IsSizeVariable;
+            EvaluatorParams.Interpretation.MaxSize = int.Parse(SizeMaxGene);
+            EvaluatorParams.Interpretation.MinSize = int.Parse(SizeMinGene);
+            EvaluatorParams.Interpretation.Width   = int.Parse(WidthGene);
+            EvaluatorParams.Interpretation.Height  = int.Parse(HeightGene);
             ApplyBtnEnable = false;
         }
 

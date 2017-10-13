@@ -4,6 +4,47 @@ using Emgu.CV;
 
 namespace GeneticAlgorithm
 {
+
+    public enum GAColorType
+    {
+        BlackAndWhite,
+        GrayScale
+    }
+
+    public enum GAGeneForm
+    {
+        Rectangle,
+        Ellipse
+    }
+
+    public class GAEvaluatorParameters
+    {
+        public GAInterpretationParameters Interpretation;
+        public GAEvaluationParameters Evaluation;
+
+        public GAEvaluatorParameters()
+        {
+            Interpretation = new GAInterpretationParameters();
+            Evaluation = new GAEvaluationParameters();
+        }
+    }
+
+    public class GAInterpretationParameters
+    {
+        public GAColorType Color;
+        public GAGeneForm Form;
+        public bool IsSizeVariable;
+        public int MaxSize;
+        public int MinSize;
+        public int Height;
+        public int Width;
+    }
+
+    public class GAEvaluationParameters
+    {
+
+    }
+
     class GAEvaluatorImageReproducer : IGAIndividuEvaluator
     {
         private Mat TargetMat;
