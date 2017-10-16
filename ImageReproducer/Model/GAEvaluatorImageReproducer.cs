@@ -1,6 +1,7 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using Emgu.CV;
-
+using Emgu.CV.Structure;
 
 namespace GeneticAlgorithm
 {
@@ -47,36 +48,60 @@ namespace GeneticAlgorithm
 
     class GAEvaluatorImageReproducer : IGAIndividuEvaluator
     {
+        private GAEvaluatorParameters Params;
         private Mat TargetMat;
+        private MCvScalar Background;
         private int Width;
         private int Height;
-        private const int PixWidth = 5;
-        private const int PixHeight = 5;
 
-        public GAEvaluatorImageReproducer(string TargetPath)
+        public GAEvaluatorImageReproducer(string TargetPath, GAEvaluatorParameters Params)
         {
+            this.Params = Params;
             TargetMat = CvInvoke.Imread(TargetPath, Emgu.CV.CvEnum.ImreadModes.Grayscale);
+            Background = FindBackground(TargetMat);
             Width = TargetMat.Width;
             Height = TargetMat.Height;
+        }
+
+        private MCvScalar FindBackground(Mat Img)
+        {
+            byte[] TargetBytes = TargetMat.GetData();
+            int cpt = 0;
+            for (int i = 0; i < TargetBytes.Length; i++)
+            {
+                if (TargetBytes[i] > 127) 
+                {
+                    cpt++;
+                }
+            }
+
+            if (cpt > TargetBytes.Length / 2)
+            {
+                return new MCvScalar(255);
+            }
+            else
+            {
+                return new MCvScalar(0);
+            }
+
+            
         }
 
         public int EvaluateIndividu(GAIndividu Ind)
         {
             int Fitness = 0;
 
-            if (Ind.GeneSize == 2)
-            {
-                Mat IndMat = IndToMat(Ind);
+            Mat IndMat = IndToMat(Ind);
 
-                byte[] TargetBytes = TargetMat.GetData();
-                byte[] IndBytes = IndMat.GetData();
+            byte[] TargetBytes = TargetMat.GetData();
+            byte[] IndBytes = IndMat.GetData();
                 
-                for (int i = 0; i < IndBytes.Length; i++)
+            for (int i = 0; i < IndBytes.Length; i++)
+            {
+                    
+                if(IndBytes[i] == TargetBytes[i])
                 {
-                    if (IndBytes[i] == TargetBytes[i] && IndBytes[i] == 0)
-                    {
-                        Fitness++;
-                    }
+                    Fitness++;
                 }
             }
 
@@ -85,22 +110,65 @@ namespace GeneticAlgorithm
 
         public Mat IndToMat(GAIndividu Ind)
         {
+            
             Mat IndMat = new Mat(TargetMat.Width, TargetMat.Height, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
 
-            Emgu.CV.Structure.MCvScalar Black = new Emgu.CV.Structure.MCvScalar(0);
-            Emgu.CV.Structure.MCvScalar White = new Emgu.CV.Structure.MCvScalar(255);
+            IndMat.SetTo(Background);
 
-            IndMat.SetTo(White);
+            Ind.Adn.ForEach(Gene =>
+            {
 
-            Ind.Adn.ForEach(Gene => {
-                CvInvoke.Rectangle(IndMat
-                                , new Rectangle((int)(Gene.ListValue[0] * Width) - 3
-                                               , (int)(Gene.ListValue[1] * Height) - 3
+                MCvScalar Color;
+                int IndexColor, PixWidth, PixHeight;
+                int DeltaSize = Params.Interpretation.MaxSize + 1 - Params.Interpretation.MinSize;
+
+                if (Params.Interpretation.IsSizeVariable)
+                {
+                    PixWidth   = Params.Interpretation.MinSize + (int)(DeltaSize * Gene.ListValue[2]);
+                    PixHeight  = Params.Interpretation.MinSize + (int)(DeltaSize * Gene.ListValue[3]);
+                    IndexColor = 4;
+                }
+                else
+                {
+                    PixWidth   = Params.Interpretation.Width;
+                    PixHeight  = Params.Interpretation.Height;
+                    IndexColor = 2;
+                }
+
+                if (Params.Interpretation.Color == GAColorType.BlackAndWhite)
+                {
+                    Color = new MCvScalar(0);
+                }
+                else
+                {
+                    Color = new MCvScalar((int)(Gene.ListValue[IndexColor] * 256));
+                }
+
+
+                if (Params.Interpretation.Form == GAGeneForm.Rectangle)
+                {
+                    CvInvoke.Rectangle(IndMat
+                                , new Rectangle((int)(Gene.ListValue[0] * Width) - (int)PixWidth/2
+                                               , (int)(Gene.ListValue[1] * Height) - (int)PixHeight/2
                                                , PixWidth
                                                , PixHeight)
-                                , Black
+                                , Color
                                 , -1);
+                }
+                else
+                {
+                    CvInvoke.Ellipse(IndMat
+                                    , new RotatedRect(new PointF((int)(Gene.ListValue[0] * Width)
+                                                                , (int)(Gene.ListValue[1] * Height))
+                                                     , new SizeF(PixWidth
+                                                                , PixHeight)
+                                                     , 0)
+                                    , Color
+                                    , -1
+                                    );
+                }    
             });
+
             return IndMat;
         }
 

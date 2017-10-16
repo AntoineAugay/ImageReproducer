@@ -377,8 +377,8 @@ namespace ImageReproducer.ViewModel
                 if (Result.Success && (int.Parse(_SizeMaxGene) >= int.Parse(value)))
                 {
                     ApplyBtnEnable = true;
-                    _SizeMaxGene = value;
-                    RaisePropertyChanged(nameof(SizeMaxGene));
+                    _SizeMinGene = value;
+                    RaisePropertyChanged(nameof(SizeMinGene));
                 }
             }
         }

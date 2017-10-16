@@ -10,13 +10,15 @@ namespace ImageReproducer.ViewModel
     class GAThreadHandle
     {
         private GAParameters GAParams;
+        private GAEvaluatorParameters GAEvalParams;
         private ConcurrentQueue<ThreadMessage> ImageQueue;
         private CancellationToken Token;
         private string TargetPath;
 
-        public GAThreadHandle(GAParameters Params, string TargetPath, ConcurrentQueue<ThreadMessage> ImageQueue, CancellationToken CancelToken)
+        public GAThreadHandle(GAParameters Params, GAEvaluatorParameters EvalParams,string TargetPath, ConcurrentQueue<ThreadMessage> ImageQueue, CancellationToken CancelToken)
         {
             this.GAParams = Params;
+            this.GAEvalParams = EvalParams;
             this.TargetPath = TargetPath;
             this.ImageQueue = ImageQueue;
             this.Token = CancelToken;
@@ -25,7 +27,7 @@ namespace ImageReproducer.ViewModel
         // Méthode boucle du thread
         public void ThreadLoop()
         {
-            GAEvaluatorImageReproducer Evaluator = new GAEvaluatorImageReproducer(TargetPath);
+            GAEvaluatorImageReproducer Evaluator = new GAEvaluatorImageReproducer(TargetPath, GAEvalParams);
             GAGenerationManager Manager = new GAGenerationManager(GAParams, Evaluator);
 
             int n = 0;

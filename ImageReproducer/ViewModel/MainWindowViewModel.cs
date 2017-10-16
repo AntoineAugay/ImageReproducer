@@ -187,7 +187,7 @@ namespace ImageReproducer.ViewModel
             EvaluatorParams.Interpretation.Color = GAColorType.BlackAndWhite;
             EvaluatorParams.Interpretation.Form = GAGeneForm.Rectangle;
             EvaluatorParams.Interpretation.IsSizeVariable = false;
-            EvaluatorParams.Interpretation.MaxSize = 10;
+            EvaluatorParams.Interpretation.MaxSize = 7;
             EvaluatorParams.Interpretation.MinSize = 3;
             EvaluatorParams.Interpretation.Width   = 5;
             EvaluatorParams.Interpretation.Height  = 5;
@@ -239,7 +239,7 @@ namespace ImageReproducer.ViewModel
                     ThreadMessageProcess = new Thread(() => MessageProcessing(CancelTokenSource.Token));
                     ThreadMessageProcess.Start();
 
-                    GAImageReproducerThreadHandler = new GAThreadHandle(Params, _TargetImgPath, ImageQueue, CancelTokenSource.Token);
+                    GAImageReproducerThreadHandler = new GAThreadHandle(Params, EvaluatorParams, _TargetImgPath, ImageQueue, CancelTokenSource.Token);
                     GAThread = new Thread(new ThreadStart(GAImageReproducerThreadHandler.ThreadLoop));
                     GAThread.Start();
 
