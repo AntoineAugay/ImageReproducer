@@ -7,7 +7,6 @@ namespace GeneticAlgorithm
         TournamentSelection
     }
 
-
     public class GAGeneralParams
     {
         public int PopulationSize;

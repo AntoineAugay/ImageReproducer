@@ -9,11 +9,11 @@ namespace ImageReproducer
     /// </summary>
     public partial class OptionsWindow : Window
     {
-        public OptionsWindow(ref GAParameters Params)
+        public OptionsWindow(ref GAParameters Params, ref GAEvaluatorParameters EvaluatorParams)
         {
             InitializeComponent();
             var OptionsViewModel = DataContext as OptionsWindowViewModel;
-            OptionsViewModel.SetParams(ref Params);
+            OptionsViewModel.SetParams(ref Params, ref EvaluatorParams);
         }
     }
 }
